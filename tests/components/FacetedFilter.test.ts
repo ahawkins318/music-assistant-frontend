@@ -132,6 +132,27 @@ describe("FacetedFilter", () => {
     ).toBe(true);
   });
 
+  it("titles a short list behind a custom trigger", () => {
+    const mountWithTrigger = (options: { label: string; value: string }[]) =>
+      mount(FacetedFilter, {
+        props: { title: "Hide music source", options, modelValue: [] },
+        slots: { trigger: "<button>filter</button>" },
+        global: { mocks: i18nMock, stubs },
+      });
+
+    const short = mountWithTrigger(STAGE_OPTIONS);
+    expect(short.get(".faceted-filter-title").text()).toBe("Hide music source");
+
+    // the search placeholder carries the title on a long list
+    expect(
+      mountWithTrigger(manyOptions(9)).find(".faceted-filter-title").exists(),
+    ).toBe(false);
+    // and the default trigger shows it on its button
+    expect(
+      mountFilter(STAGE_OPTIONS).find(".faceted-filter-title").exists(),
+    ).toBe(false);
+  });
+
   it("filters the options with the search field", async () => {
     const wrapper = mountFilter(manyOptions(12));
 

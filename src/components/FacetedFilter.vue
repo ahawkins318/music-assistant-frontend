@@ -65,6 +65,11 @@
           :aria-label="$t('faceted_filter.search_for', { title })"
           class="mb-2 h-8"
         />
+        <!-- a custom trigger (often a bare icon) does not show the title, and without
+             the search placeholder nothing else would say what the list is for -->
+        <div v-else-if="$slots.trigger" class="faceted-filter-title">
+          {{ title }}
+        </div>
         <div class="faceted-filter-list">
           <div
             v-for="option in filteredOptions"
@@ -193,6 +198,13 @@ const onOpenChange = (open: boolean) => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.faceted-filter-title {
+  padding: 0 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(var(--v-theme-on-surface), 0.7);
 }
 
 .faceted-filter-list {
